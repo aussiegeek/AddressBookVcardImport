@@ -10,6 +10,7 @@
 
 
 @implementation VcardImporter
+
 - (void)parse {
     addressBook = ABAddressBookCreate();
     
@@ -30,6 +31,7 @@
     ABAddressBookSave(addressBook, NULL);
 
     [vcardString release];
+    NSLog(@"Complete");
 }
 
 - (void) parseLine:(NSString *)line {
@@ -39,6 +41,8 @@
         ABAddressBookAddRecord(addressBook,personRecord, NULL);
     } else if ([line hasPrefix:@"N:"]) {
         [self parseName:line];
+    } else if ([line hasPrefix:@"EMAIL;"]) {
+        [self parseEmail:line];
     }
 }
 
@@ -50,6 +54,29 @@
     ABRecordSetValue (personRecord, kABPersonPrefixProperty,[components objectAtIndex:3], NULL);
 }
 
+- (void) parseEmail:(NSString *)line {
+    NSArray *mainComponents = [line componentsSeparatedByString:@":"];
+    NSString *emailAddress = [mainComponents objectAtIndex:1];
+    CFStringRef label;
+    
+    if ([line rangeOfString:@"WORK"].location != NSNotFound) {
+        label = kABWorkLabel;
+    } else if ([line rangeOfString:@"HOME"].location != NSNotFound) {
+        label = kABHomeLabel;
+    } else {
+        label = kABOtherLabel;
+    }
+
+    ABMultiValueRef immutableMultiEmail = ABRecordCopyValue(personRecord, kABPersonEmailProperty);
+    ABMutableMultiValueRef multiEmail;
+    if (immutableMultiEmail) {
+        multiEmail = ABMultiValueCreateMutableCopy(immutableMultiEmail);
+    } else {
+        multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    }
+    ABMultiValueAddValueAndLabel(multiEmail, emailAddress, label, NULL);
+    ABRecordSetValue(personRecord, kABPersonEmailProperty, multiEmail,nil);
+}
 - (void) emptyAddressBook {
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
     int arrayCount = CFArrayGetCount(people);

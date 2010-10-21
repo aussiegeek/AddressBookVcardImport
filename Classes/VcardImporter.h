@@ -16,6 +16,7 @@
 - (void)parse;
 - (void) parseLine:(NSString *)line;
 - (void) parseName:(NSString *)line;
+- (void) parseEmail:(NSString *)line;
 - (void) emptyAddressBook;
 @end
 
