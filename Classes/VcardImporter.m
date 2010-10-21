@@ -11,9 +11,20 @@
 
 @implementation VcardImporter
 
-- (void)parse {
-    addressBook = ABAddressBookCreate();
+- (id) init {
+    if (self = [super init]) {
+        addressBook = ABAddressBookCreate();
+    }
     
+    return self;
+}
+
+- (void) dealloc {
+    CFRelease(addressBook);
+    [super dealloc];
+}
+
+- (void)parse {
     [self emptyAddressBook];
     
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"vCards" ofType:@"vcf"];
@@ -31,7 +42,6 @@
     ABAddressBookSave(addressBook, NULL);
 
     [vcardString release];
-    NSLog(@"Complete");
 }
 
 - (void) parseLine:(NSString *)line {
@@ -58,6 +68,7 @@
     NSArray *mainComponents = [line componentsSeparatedByString:@":"];
     NSString *emailAddress = [mainComponents objectAtIndex:1];
     CFStringRef label;
+    ABMutableMultiValueRef multiEmail;
     
     if ([line rangeOfString:@"WORK"].location != NSNotFound) {
         label = kABWorkLabel;
@@ -68,7 +79,6 @@
     }
 
     ABMultiValueRef immutableMultiEmail = ABRecordCopyValue(personRecord, kABPersonEmailProperty);
-    ABMutableMultiValueRef multiEmail;
     if (immutableMultiEmail) {
         multiEmail = ABMultiValueCreateMutableCopy(immutableMultiEmail);
     } else {
@@ -76,6 +86,11 @@
     }
     ABMultiValueAddValueAndLabel(multiEmail, emailAddress, label, NULL);
     ABRecordSetValue(personRecord, kABPersonEmailProperty, multiEmail,nil);
+    
+    CFRelease(multiEmail);
+    if (immutableMultiEmail) {
+        CFRelease(immutableMultiEmail);
+    }
 }
 - (void) emptyAddressBook {
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
