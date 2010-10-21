@@ -18,6 +18,7 @@
 		E71087F8126E63C600BFE719 /* VcardImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = E71087F7126E63C600BFE719 /* VcardImporter.m */; };
 		E71087FC126E678800BFE719 /* vCards.vcf in Resources */ = {isa = PBXBuildFile; fileRef = E71087FB126E678800BFE719 /* vCards.vcf */; };
 		E710884B126E74B200BFE719 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E710884A126E74B200BFE719 /* AddressBook.framework */; };
+		E7595E2512706AE400F56593 /* BaseSixtyFour.m in Sources */ = {isa = PBXBuildFile; fileRef = E7595E2412706AE400F56593 /* BaseSixtyFour.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		E71087F7126E63C600BFE719 /* VcardImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VcardImporter.m; sourceTree = "<group>"; };
 		E71087FB126E678800BFE719 /* vCards.vcf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vCards.vcf; path = /Users/alan/Desktop/vCards.vcf; sourceTree = "<absolute>"; };
 		E710884A126E74B200BFE719 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		E7595E2312706AE400F56593 /* BaseSixtyFour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSixtyFour.h; sourceTree = "<group>"; };
+		E7595E2412706AE400F56593 /* BaseSixtyFour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSixtyFour.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,8 @@
 				28D7ACF70DDB3853001CB0EB /* AddressBookVcardImportViewController.m */,
 				E71087F6126E63C600BFE719 /* VcardImporter.h */,
 				E71087F7126E63C600BFE719 /* VcardImporter.m */,
+				E7595E2312706AE400F56593 /* BaseSixtyFour.h */,
+				E7595E2412706AE400F56593 /* BaseSixtyFour.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 				1D3623260D0F684500981E51 /* AddressBookVcardImportAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* AddressBookVcardImportViewController.m in Sources */,
 				E71087F8126E63C600BFE719 /* VcardImporter.m in Sources */,
+				E7595E2512706AE400F56593 /* BaseSixtyFour.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

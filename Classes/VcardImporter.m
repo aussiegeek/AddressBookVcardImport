@@ -7,7 +7,7 @@
 //
 
 #import "VcardImporter.h"
-
+#import "BaseSixtyFour.h"
 
 @implementation VcardImporter
 
@@ -45,7 +45,13 @@
 }
 
 - (void) parseLine:(NSString *)line {
-    if ([line hasPrefix:@"BEGIN"]) {
+    if (base64image && [line hasPrefix:@"  "]) {
+        NSString *trimmedLine = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        base64image = [base64image stringByAppendingString:trimmedLine];
+    } else if (base64image) {
+        // finished contatenating image string
+        [self parseImage];
+    } else if ([line hasPrefix:@"BEGIN"]) {
         personRecord = ABPersonCreate();
     } else if ([line hasPrefix:@"END"]) {
         ABAddressBookAddRecord(addressBook,personRecord, NULL);
@@ -53,6 +59,8 @@
         [self parseName:line];
     } else if ([line hasPrefix:@"EMAIL;"]) {
         [self parseEmail:line];
+    } else if ([line hasPrefix:@"PHOTO;BASE64"]) {
+        base64image = [NSString string];
     }
 }
 
@@ -91,6 +99,13 @@
     if (immutableMultiEmail) {
         CFRelease(immutableMultiEmail);
     }
+}
+
+- (void) parseImage {
+    NSData *imageData = [BaseSixtyFour decode:base64image];
+    base64image = nil;
+    ABPersonSetImageData(personRecord, (CFDataRef)imageData, NULL);
+    
 }
 - (void) emptyAddressBook {
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
